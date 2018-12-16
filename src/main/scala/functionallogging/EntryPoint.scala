@@ -10,8 +10,8 @@ object EntryPoint extends App {
 
   service
     .process("2")
-    .run(Nil)
     .run(p)
+    .run(Nil)
     .through(flushLogs)
     .compile
     .drain
