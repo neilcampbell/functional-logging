@@ -1,6 +1,6 @@
 package functionallogging
 
-import fs2.Stream
+import cats.effect.IO
 
 trait InfrastructureService {
   def getSomething(event: String): MyApp[Int]
@@ -9,16 +9,11 @@ trait InfrastructureService {
 
 class InfrastructureServiceImpl extends InfrastructureService {
   def getSomething(event: String): MyApp[Int] = {
-    val id = Integer.parseInt(event)
     for {
+      id <- myApp[Int](IO(Integer.parseInt(event)))
       _ <- logInfo(s"getSomething was called with $event")
     } yield id
   }
-
-  //Return an error
-  /*def getSomething(event: String): MyApp[Int] = myApp { _ =>
-    Stream.raiseError(new Error("Boom"))
-  }*/
 
   def saveSomething(id: Int): MyApp[Unit] =
     for {

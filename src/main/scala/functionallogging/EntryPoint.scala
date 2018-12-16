@@ -9,7 +9,7 @@ object EntryPoint extends App {
   val service = new DomainServiceImpl
 
   service
-    .process("2")
+    .process("1")
     .run(p)
     .run(Nil)
     .through(flushLogs)

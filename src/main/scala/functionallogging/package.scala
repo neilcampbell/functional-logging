@@ -26,4 +26,9 @@ package object functionallogging {
   def myApp[A](f: Logs => StreamIO[(Logs, A)]): MyApp[A] =
     StateT[StreamIO, Logs, A](f)
 
+  def myApp[A](f: => IO[A]): MyApp[A] = myApp[A] { s: Logs =>
+    Stream.eval(for {
+      a <- f
+    } yield (s, a))
+  }
 }
